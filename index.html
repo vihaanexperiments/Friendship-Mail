@@ -1470,8 +1470,29 @@ function isRealHostedPage(){
   return (location.protocol === 'http:' || location.protocol === 'https:');
 }
 
+async function tryShortenLink(longUrl, timeoutMs){
+  // Best-effort: tries a free no-key shortener. If it's blocked, slow, or errors
+  // out for any reason, we just return null and the caller falls back to the
+  // full link — nothing ever breaks because of this.
+  try{
+    const controller = new AbortController();
+    const timer = setTimeout(()=>controller.abort(), timeoutMs || 4000);
+    const res = await fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(longUrl), {
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+    if(!res.ok) return null;
+    const text = (await res.text()).trim();
+    if(text.indexOf('http') === 0 && text.length < longUrl.length) return text;
+    return null;
+  }catch(err){
+    return null; // network/CORS/timeout — silently fall back
+  }
+}
+
 document.getElementById('btnShare').addEventListener('click', async ()=>{
   const hint = document.getElementById('shareHint');
+  const btn = document.getElementById('btnShare');
   hint.textContent = '';
   try{
     const {encoded, trimmedPhoto, tooLarge} = buildSharePayload();
@@ -1485,15 +1506,24 @@ document.getElementById('btnShare').addEventListener('click', async ()=>{
 
     const hosted = isRealHostedPage();
     const fullLink = location.origin + location.pathname + '#c=' + encoded;
-    input.value = hosted ? fullLink : encoded;
-
-    const copied = await copyInputText(input);
     const trimmedNote = trimmedPhoto ? 'Your photo was too large to include, so it was left out. ' : '';
 
     if(hosted){
+      input.value = fullLink;
+      const originalBtnText = btn.textContent;
+      btn.textContent = 'Shortening…';
+      const shortLink = await tryShortenLink(fullLink, 4000);
+      btn.textContent = originalBtnText;
+      const finalLink = shortLink || fullLink;
+      input.value = finalLink;
+      const copied = await copyInputText(input);
       hint.innerHTML = (copied ? '✅ Link copied. ' : '⚠️ Could not auto-copy — select the link above and copy it manually. ') +
-        trimmedNote + `Just send this one link — it opens straight to your card.`;
+        trimmedNote +
+        (shortLink ? `Just send this one link — it opens straight to your card.` :
+          `Just send this one link — it opens straight to your card. (Shortening was unavailable right now, so this is the full link — it still works exactly the same.)`);
     } else {
+      input.value = encoded;
+      const copied = await copyInputText(input);
       hint.innerHTML = (copied ? '✅ Copied. ' : '⚠️ Could not auto-copy — select the code above and copy it manually. ') +
         trimmedNote +
         `<b>Step 1:</b> Share this app's page (Publish/Share button) with your friend — once. <b>Step 2:</b> Send them this code for each card. They paste it into the box that greets them.`;
