@@ -523,7 +523,7 @@ select{
 .face.front.holo-anim{background-size:320% 320% !important; animation:holoShift 7s ease-in-out infinite;}
 footer{text-align:center; padding:10px 20px 50px; font-size:11.5px; opacity:.5; font-family:'Special Elite',monospace; letter-spacing:.04em;}
 
-/* ---- Viewer mode: recipient sees only the letter, swipes up to customize ---- */
+/* ---- Viewer mode: recipient sees only the letter, clicks to customize ---- */
 body.viewer-mode{overflow:hidden; height:100vh;}
 body.viewer-mode header,
 body.viewer-mode .panel,
@@ -547,10 +547,11 @@ body.viewer-mode .stage{
   flex-direction:column; align-items:center; gap:2px;
   font-family:'Special Elite',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase;
   color:var(--ink); opacity:.75; cursor:pointer;
-  animation:bounceUp 1.7s ease-in-out infinite;
+  animation:pulseClick 1.7s ease-in-out infinite;
 }
+.swipe-hint:hover{opacity:1;}
 .swipe-hint .chevron{font-size:20px; line-height:1;}
-@keyframes bounceUp{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+@keyframes pulseClick{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
 
 /* ---- Landing gate: shown first, before the editor ---- */
 .landing-gate{
@@ -777,8 +778,8 @@ body.viewer-mode .stage{
       <button id="btnStartFresh">Start my own</button>
     </div>
     <div class="swipe-hint" id="swipeHint" style="display:none;">
-      <div class="chevron">⌃</div>
-      <div>Swipe up to make your own card</div>
+      <div class="chevron">✎</div>
+      <div>Click to make your own card</div>
     </div>
 
     <div class="stage" id="stage">
@@ -1641,7 +1642,7 @@ document.getElementById('btnStartFresh').addEventListener('click', ()=>{
   history.replaceState(null, '', location.pathname + location.search);
 });
 
-// ---------------- viewer mode: see the letter first, swipe up to customize your own ----------------
+// ---------------- viewer mode: see the letter first, click to customize your own ----------------
 function enterViewerMode(){
   document.body.classList.add('viewer-mode');
   document.getElementById('swipeHint').style.display = 'flex';
@@ -1653,22 +1654,6 @@ function exitViewerMode(){
   window.scrollTo({top:0, behavior:'auto'});
 }
 document.getElementById('swipeHint').addEventListener('click', exitViewerMode);
-(function(){
-  let startY = null;
-  const stageEl = document.getElementById('stage');
-  stageEl.addEventListener('touchstart', e=>{
-    if(!document.body.classList.contains('viewer-mode')) return;
-    startY = e.touches[0].clientY;
-  }, {passive:true});
-  stageEl.addEventListener('touchmove', e=>{
-    if(!document.body.classList.contains('viewer-mode') || startY===null) return;
-    if(startY - e.touches[0].clientY > 65){ exitViewerMode(); startY = null; }
-  }, {passive:true});
-  stageEl.addEventListener('touchend', ()=>{ startY = null; });
-  window.addEventListener('wheel', e=>{
-    if(document.body.classList.contains('viewer-mode') && e.deltaY < -25) exitViewerMode();
-  }, {passive:true});
-})();
 
 // ---------------- init ----------------
 renderAll();
