@@ -1447,7 +1447,7 @@ function b64DecodeUnicode(str){
   while(str.length % 4) str += '=';
   return decodeURIComponent(atob(str).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
 }
-const MAX_CODE_LEN = 6000; // keep codes short enough to paste anywhere reliably
+const MAX_CODE_LEN = 40000; // now hosted with a real URL, so we can afford a much bigger cap — photos are already resized/compressed client-side before this point
 
 function buildSharePayload(){
   let dataStr = JSON.stringify(state);
