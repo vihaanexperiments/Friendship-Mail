@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friendship Mail — Make a Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Caveat:wght@500;600;700&family=Special+Elite&family=Work+Sans:wght@400;500;600;700&family=Pacifico&family=Indie+Flower&family=Quicksand:wght@500;600;700&family=Dancing+Script:wght@600;700&family=Shadows+Into+Light&family=Poppins:wght@400;500;600;700&family=Nunito:wght@500;600;700&family=Great+Vibes&family=Sacramento&family=Satisfy&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --ink:#241f18;
+  --kraft:#d8bd8f;
+  --kraft-dark:#c2a06b;
+  --kraft-deep:#a9835a;
+  --paper:#f6efdd;
+  --paper-2:#fbf7ec;
+  --red:#9b3b32;
+  --red-dark:#7a2c26;
+  --teal:#3f6357;
+  --gold:#b98b2e;
+  --navy:#24344a;
+  --line: rgba(36,31,24,0.18);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Work Sans',sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(ellipse 120% 90% at 10% 0%, rgba(255,255,255,0.25), transparent 55%),
+    linear-gradient(160deg, var(--kraft) 0%, var(--kraft-dark) 55%, var(--kraft-deep) 100%);
+  min-height:100vh;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none; opacity:.5; mix-blend-mode:multiply;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(36,31,24,0.02) 0 2px, transparent 2px 4px);
+}
+
+/* ---------- header ---------- */
+header{
+  padding:26px 24px 18px;
+  text-align:center;
+  position:relative;
+}
+.eyebrow{
+  font-family:'Special Elite',monospace;
+  letter-spacing:.28em;
+  font-size:11px;
+  color:var(--red-dark);
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.eyebrow::before,.eyebrow::after{content:"";width:26px;height:1px;background:var(--red-dark);opacity:.6;}
+h1{
+  font-family:'Playfair Display',serif;
+  font-weight:800;
+  font-size:clamp(28px,4.4vw,44px);
+  margin:8px 0 4px;
+  color:var(--ink);
+}
+h1 .ampersand{color:var(--red);font-style:italic;font-weight:600;}
+.subtitle{
+  font-size:14px;
+  color:var(--ink);
+  opacity:.65;
+  max-width:480px;
+  margin:0 auto;
+}
+
+/* ---------- layout ---------- */
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:8px 20px 60px;
+  display:grid;
+  grid-template-columns:minmax(320px,420px) 1fr;
+  gap:26px;
+  align-items:start;
+}
+@media (max-width:920px){
+  .wrap{grid-template-columns:1fr;}
+}
+
+/* ---------- panel ---------- */
+.panel{
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:0 18px 40px -20px rgba(36,31,24,0.45), 0 2px 0 rgba(255,255,255,0.5) inset;
+  overflow:hidden;
+}
+.tabs{
+  display:flex;
+  flex-wrap:wrap;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(217,196,150,.35), transparent);
+}
+.tab{
+  flex:1 1 auto;
+  min-width:74px;
+  padding:12px 6px 10px;
+  text-align:center;
+  font-family:'Special Elite',monospace;
+  font-size:10.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--ink);
+  opacity:.55;
+  cursor:pointer;
+  border-bottom:3px solid transparent;
+  user-select:none;
+  transition:opacity .15s, border-color .15s, background .15s;
+}
+.tab:hover{opacity:.85;background:rgba(155,59,50,0.06);}
+.tab.active{opacity:1;border-color:var(--red);color:var(--red-dark);background:rgba(155,59,50,0.08);}
+.tab-panels{padding:20px 20px 24px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+.field{margin-bottom:16px;}
+.field label{
+  display:block;
+  font-family:'Special Elite',monospace;
+  font-size:10.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--navy);
+  opacity:.75;
+  margin-bottom:7px;
+}
+textarea,input[type=text]{
+  width:100%;
+  font-family:'Work Sans',sans-serif;
+  font-size:14px;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fff;
+  color:var(--ink);
+  resize:vertical;
+}
+textarea:focus,input[type=text]:focus{outline:2px solid var(--red);outline-offset:1px;}
+select{
+  width:100%;
+  font-family:'Work Sans',sans-serif;
+  font-size:14px;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:#fff;
+  color:var(--ink);
+}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.theme-filter{display:flex; gap:6px; margin-bottom:9px; flex-wrap:wrap;}
+.theme-filter-opt{
+  padding:6px 12px; border-radius:16px; border:1px solid var(--line); font-size:11.5px; cursor:pointer; background:#fff;
+}
+.theme-filter-opt.active{background:var(--red); color:#fff; border-color:var(--red);}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px; max-height:420px; overflow-y:auto; padding-right:4px;}
+.theme-card{
+  border:2px solid var(--line);
+  border-radius:8px;
+  padding:10px;
+  cursor:pointer;
+  text-align:center;
+  transition:transform .15s, border-color .15s;
+}
+.theme-card:hover{transform:translateY(-2px);}
+.theme-card.active{border-color:var(--red);box-shadow:0 0 0 3px rgba(155,59,50,0.12);}
+.theme-swatch{height:44px;border-radius:5px;margin-bottom:7px;}
+.theme-card span{font-size:11.5px;font-weight:600;}
+
+.font-choices{display:flex;gap:8px;flex-wrap:wrap;}
+.font-chip{
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:7px 13px;
+  font-size:13px;
+  cursor:pointer;
+  background:#fff;
+}
+.font-chip.active{background:var(--red);color:#fff;border-color:var(--red);}
+
+.upload-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 14px;border-radius:6px;
+  border:1px dashed var(--kraft-deep);
+  background:rgba(217,189,143,0.18);
+  font-size:13px; cursor:pointer; width:100%; justify-content:center;
+}
+.upload-btn:hover{background:rgba(217,189,143,0.32);}
+.file-hidden{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+.hint{font-size:11.5px;opacity:.55;margin-top:6px;}
+
+.sticker-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
+.sticker-opt{
+  font-size:20px; text-align:center; padding:7px 0; border-radius:6px;
+  border:1px solid var(--line); background:#fff; cursor:pointer;
+}
+.sticker-opt:hover{background:rgba(155,59,50,0.08);transform:scale(1.08);}
+.placed-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.placed-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 6px 4px 10px;font-size:12px;
+}
+.placed-chip button{border:none;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:11px;line-height:1;cursor:pointer;}
+
+.color-swatches{display:flex;gap:8px;flex-wrap:wrap;}
+.swatch{
+  width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);
+}
+.swatch.active{box-shadow:0 0 0 2px var(--ink);}
+
+.pattern-choices{display:flex;gap:7px;flex-wrap:wrap;}
+.pattern-opt{flex:1 1 auto;min-width:70px;padding:8px 6px;border:1px solid var(--line);border-radius:6px;text-align:center;font-size:11.5px;cursor:pointer;background:#fff;}
+.pattern-opt.active{border-color:var(--red);background:rgba(155,59,50,0.08);color:var(--red-dark);font-weight:600;}
+
+.motif-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;max-height:340px;overflow-y:auto;padding-right:2px;}
+.motif-opt{
+  border:1.5px solid var(--line); border-radius:8px; padding:8px 4px 6px;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  cursor:pointer; background:#fff;
+}
+.motif-opt svg{width:34px; height:34px;}
+.motif-opt span{font-size:10.5px; font-weight:600; color:var(--ink);}
+.motif-opt.active{border-color:var(--red); background:rgba(155,59,50,0.08);}
+
+.checkbox-row{display:flex;align-items:center;gap:8px;font-size:13px;}
+.checkbox-row input{width:16px;height:16px;}
+
+.small-note{font-size:12px;opacity:.6;line-height:1.5;}
+
+/* ---------- preview column ---------- */
+.preview-col{position:sticky; top:16px;}
+.preview-toolbar{
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  margin-bottom:14px; flex-wrap:wrap;
+}
+.mode-toggle{
+  display:inline-flex; background:rgba(255,255,255,.55); border-radius:30px; padding:3px;
+  border:1px solid var(--line);
+}
+.mode-btn{
+  padding:8px 16px; border-radius:24px; font-family:'Special Elite',monospace; font-size:11px;
+  letter-spacing:.05em; text-transform:uppercase; cursor:pointer; border:none; background:transparent; color:var(--ink);
+}
+.mode-btn.active{background:var(--red); color:#fff;}
+.dl-buttons{display:flex; gap:8px; flex-wrap:wrap;}
+.dl-btn{
+  font-family:'Work Sans',sans-serif; font-weight:600; font-size:12.5px;
+  padding:9px 14px; border-radius:6px; border:1px solid var(--ink); background:var(--ink); color:#fff; cursor:pointer;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.dl-btn:hover{background:#000;}
+.dl-btn.secondary{background:transparent;color:var(--ink);}
+
+.share-panel{
+  display:flex; gap:8px; margin-bottom:6px;
+  background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px;
+}
+.share-panel input{
+  flex:1; border:none; background:transparent; font-size:12.5px; padding:6px 8px; color:var(--ink); font-family:'Work Sans',sans-serif;
+}
+.share-panel input:focus{outline:none;}
+.share-hint{font-size:11.5px; opacity:.6; margin:0 0 10px; min-height:14px;}
+.code-toggle{
+  font-size:12px; color:var(--red-dark); cursor:pointer; margin:-4px 0 10px; display:inline-block;
+  font-family:'Special Elite',monospace; letter-spacing:.02em;
+}
+.code-toggle:hover{text-decoration:underline;}
+.share-link-anchor{
+  display:block; font-size:12.5px; color:var(--red-dark); text-decoration:underline;
+  word-break:break-all; margin:-4px 0 8px; font-weight:600;
+}
+.base-url-row{
+  background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px; margin-bottom:4px;
+}
+.base-url-row input{
+  width:100%; border:none; background:transparent; font-size:12.5px; padding:6px 8px; color:var(--ink); font-family:'Work Sans',sans-serif;
+}
+.base-url-row input:focus{outline:none;}
+#baseUrlHint{margin-bottom:12px;}
+.banner{
+  background:linear-gradient(135deg, rgba(155,59,50,.12), rgba(185,139,46,.12));
+  border:1px solid var(--line); border-radius:8px; padding:10px 14px;
+  font-size:13px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.banner button{
+  border:1px solid var(--ink); background:transparent; border-radius:6px; padding:6px 10px; font-size:12px; cursor:pointer;
+}
+.stage{
+  min-height:520px;
+  display:flex; align-items:center; justify-content:center;
+  perspective:1800px;
+  padding:20px 10px;
+}
+
+/* ---- Envelope ---- */
+.envelope{
+  width:360px; max-width:92vw; height:236px;
+  position:relative;
+  cursor:pointer;
+}
+.env-body{
+  position:absolute; inset:0;
+  background: var(--env-color, #d8bd8f);
+  border-radius:5px;
+  box-shadow:0 22px 40px -18px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+.env-body::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:radial-gradient(rgba(0,0,0,.5) 0.4px, transparent 0.5px);
+  background-size:2.6px 2.6px;
+  opacity:.05;
+  pointer-events:none;
+}
+
+.env-fold-left, .env-fold-right, .env-fold-bottom{
+  position:absolute; opacity:.14; background:#000;
+}
+.env-fold-left{ left:0; top:0; width:0; height:0; border-style:solid; border-width:118px 0 118px 180px; border-color:transparent transparent transparent rgba(0,0,0,0.10);}
+.env-fold-right{ right:0; top:0; width:0; height:0; border-style:solid; border-width:118px 180px 118px 0; border-color:transparent rgba(0,0,0,0.10) transparent transparent;}
+
+.card-slot{
+  position:absolute; left:8%; right:8%; top:10%;
+  height:78%;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  border-radius:3px;
+  transition:transform .55s cubic-bezier(.6,.05,.3,1);
+  transform:translateY(96%);
+  z-index:2;
+}
+.envelope.open .card-slot{transform:translateY(6%);}
+
+.env-flap{
+  position:absolute; top:0; left:0; width:100%; height:0;
+  border-left:180px solid transparent;
+  border-right:180px solid transparent;
+  border-top:128px solid var(--env-flap-color, #c2a06b);
+  transform-origin:top center;
+  transition:transform .6s cubic-bezier(.6,.05,.3,1), filter .6s;
+  z-index:5;
+  filter:brightness(0.97);
+}
+.envelope.open .env-flap{transform:rotateX(178deg); filter:brightness(.8);}
+
+.env-address{
+  position:absolute; left:14%; bottom:14%; z-index:3;
+  font-family:'Caveat',cursive; color:var(--ink); line-height:1.35;
+}
+.env-address .to-line{font-size:19px; font-weight:600;}
+.env-address .to-name{font-size:22px; font-weight:700; color:var(--red-dark);}
+.env-from{
+  position:absolute; left:6%; top:6%; z-index:3;
+  font-family:'Caveat',cursive; font-size:13px; opacity:.75; line-height:1.3;
+}
+
+.env-seal{
+  position:absolute; top:52px; left:50%; transform:translateX(-50%) rotate(-4deg);
+  width:50px; height:50px;
+  border-radius:44% 56% 61% 39% / 42% 45% 55% 58%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:19px; color:rgba(255,255,255,.92);
+  text-shadow:0 1px 0 rgba(255,255,255,.35), 0 -1px 1px rgba(0,0,0,.45);
+  box-shadow:0 4px 9px rgba(0,0,0,.4), inset 0 -5px 8px rgba(0,0,0,.35), inset 0 4px 5px rgba(255,255,255,.3);
+  z-index:6; transition:opacity .3s, transform .5s;
+  overflow:hidden;
+}
+.env-seal::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(255,255,255,.55) 0.5px, transparent 0.6px);
+  background-size:3px 3px;
+  opacity:.3;
+  mix-blend-mode:overlay;
+}
+.env-seal::after{
+  content:"";
+  position:absolute; left:50%; bottom:-9px; width:16px; height:14px;
+  background:inherit;
+  border-radius:50% 50% 60% 40% / 60% 60% 40% 40%;
+  transform:translateX(-50%);
+  box-shadow:inset 0 -3px 5px rgba(0,0,0,.3), inset 0 2px 3px rgba(255,255,255,.25);
+}
+.env-seal span{position:relative; z-index:2;}
+.env-seal-content{position:relative; z-index:2; width:100%; height:100%; display:flex; align-items:center; justify-content:center;}
+.env-seal-content .glyph{color:rgba(255,255,255,.92); text-shadow:0 1px 0 rgba(255,255,255,.35), 0 -1px 1px rgba(0,0,0,.45); font-size:19px; line-height:1;}
+.env-seal-content .wax-motif{width:72%; height:72%;}
+.envelope.open .env-seal{opacity:0; transform:translateX(-50%) scale(.4);}
+
+.env-stamp-wrap{ position:absolute; top:10px; right:12px; z-index:4; }
+
+.open-hint{
+  position:absolute; bottom:-30px; left:0; right:0; text-align:center;
+  font-family:'Special Elite',monospace; font-size:11px; letter-spacing:.05em; opacity:.55;
+}
+
+/* ---- Postcard / card ---- */
+.card3d{
+  width:380px; max-width:92vw; height:270px;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.6,.05,.3,1);
+  cursor:pointer;
+}
+.card3d.flipped{transform:rotateY(180deg);}
+.face{
+  position:absolute; inset:0;
+  border-radius:9px;
+  backface-visibility:hidden;
+  box-shadow:0 22px 44px -18px rgba(0,0,0,.5);
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.12);
+}
+.face::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:radial-gradient(rgba(0,0,0,.5) 0.4px, transparent 0.5px);
+  background-size:2.6px 2.6px;
+  opacity:.05;
+  pointer-events:none;
+  z-index:1;
+}
+.face.back{transform:rotateY(180deg); background:var(--paper-2);}
+.face.front{display:flex; align-items:center; justify-content:center; position:absolute;}
+
+.card-photo{
+  position:absolute;
+  width:120px; height:120px; object-fit:cover;
+  border-radius:6px; border:5px solid #fff; box-shadow:0 8px 18px rgba(0,0,0,.28);
+  touch-action:none; cursor:grab;
+}
+.card-title{
+  font-family:'Playfair Display',serif; font-weight:800; text-align:center;
+  padding:0 20px; z-index:2;
+}
+.sticker-el{
+  position:absolute; font-size:30px; cursor:grab; touch-action:none;
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.25));
+  user-select:none;
+}
+
+.pc-divider{position:absolute; left:56%; top:6%; bottom:6%; width:1px; background:var(--line);}
+.pc-note{
+  position:absolute; left:6%; top:8%; width:46%; bottom:8%;
+  font-size:16px; line-height:1.5; overflow:auto; white-space:pre-wrap;
+}
+.pc-right{position:absolute; right:5%; top:6%; width:38%; bottom:6%;}
+.pc-lines{position:absolute; left:0; bottom:6%; width:100%;}
+.pc-lines div{border-bottom:1px solid var(--line); height:15px;}
+.pc-to{font-family:'Caveat',cursive; font-size:17px; position:absolute; bottom:22%; left:0; color:var(--red-dark); font-weight:700;}
+
+.mini-postmark{
+  position:absolute; top:2px; right:78px; z-index:5;
+}
+
+/* ---- Stamp component (reused) ---- */
+.wax-stamp{display:flex; flex-direction:column; align-items:center; gap:4px; position:relative;}
+.wax-stamp::after{
+  content:"";
+  position:absolute; left:50%; top:calc(var(--wax-dim,64px) * .92); width:calc(var(--wax-dim,64px) * .78); height:8px;
+  background:radial-gradient(ellipse, rgba(0,0,0,.28), transparent 70%);
+  transform:translateX(-50%);
+  z-index:-1;
+}
+.wax-medallion{
+  width:var(--wax-dim,64px); height:var(--wax-dim,64px);
+  border-radius:47% 53% 61% 39% / 45% 41% 59% 55%;
+  background:radial-gradient(circle at 32% 26%, var(--stamp-color-light,#e0b8a8), var(--stamp-color,#9b3b32) 72%);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 12px rgba(0,0,0,.38), inset 0 -6px 10px rgba(0,0,0,.32), inset 0 4px 6px rgba(255,255,255,.32);
+  position:relative; overflow:hidden;
+}
+.wax-medallion::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:radial-gradient(circle, rgba(255,255,255,.55) 0.5px, transparent 0.6px);
+  background-size:3px 3px;
+  opacity:.28;
+  mix-blend-mode:overlay;
+  z-index:3;
+  pointer-events:none;
+}
+.wax-relief{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:14%;
+  z-index:1;
+}
+.wax-motif{width:100%; height:100%; display:block; overflow:visible;}
+.wax-photo{
+  position:relative; z-index:2;
+  width:74%; height:74%; object-fit:cover; border-radius:50%;
+  box-shadow:0 0 0 2px rgba(255,255,255,.65), 0 0 0 4px var(--stamp-color,#9b3b32);
+}
+.wax-denom{
+  font-family:'Special Elite',monospace; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--stamp-color,#9b3b32); text-align:center; max-width:96px;
+}
+
+.postmark{
+  width:74px; height:74px;
+  opacity:.78;
+  mix-blend-mode:multiply;
+  pointer-events:none;
+}
+
+@keyframes holoShift{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+.face.front.holo-anim{background-size:320% 320% !important; animation:holoShift 7s ease-in-out infinite;}
+footer{text-align:center; padding:10px 20px 50px; font-size:11.5px; opacity:.5; font-family:'Special Elite',monospace; letter-spacing:.04em;}
+
+/* ---- Viewer mode: recipient sees only the letter, swipes up to customize ---- */
+body.viewer-mode{overflow:hidden; height:100vh;}
+body.viewer-mode header,
+body.viewer-mode .panel,
+body.viewer-mode .preview-toolbar,
+body.viewer-mode .share-panel,
+body.viewer-mode .share-link-anchor,
+body.viewer-mode .share-hint,
+body.viewer-mode .code-toggle,
+body.viewer-mode .banner,
+body.viewer-mode footer{ display:none !important; }
+body.viewer-mode .wrap{ display:block; padding:0; max-width:none; height:100vh; }
+body.viewer-mode .preview-col{ position:static; height:100vh; }
+body.viewer-mode .stage{
+  position:fixed; inset:0; z-index:30; min-height:auto;
+  background:
+    radial-gradient(ellipse 120% 90% at 10% 0%, rgba(255,255,255,0.25), transparent 55%),
+    linear-gradient(160deg, var(--kraft) 0%, var(--kraft-dark) 55%, var(--kraft-deep) 100%);
+}
+.swipe-hint{
+  position:fixed; left:0; right:0; bottom:22px; z-index:35;
+  flex-direction:column; align-items:center; gap:2px;
+  font-family:'Special Elite',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--ink); opacity:.75; cursor:pointer;
+  animation:bounceUp 1.7s ease-in-out infinite;
+}
+.swipe-hint .chevron{font-size:20px; line-height:1;}
+@keyframes bounceUp{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+
+/* ---- Landing gate: shown first, before the editor ---- */
+.landing-gate{
+  position:fixed; inset:0; z-index:100;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  background:
+    radial-gradient(ellipse 120% 90% at 10% 0%, rgba(255,255,255,0.25), transparent 55%),
+    linear-gradient(160deg, var(--kraft) 0%, var(--kraft-dark) 55%, var(--kraft-deep) 100%);
+}
+.gate-card{
+  background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
+  box-shadow:0 26px 50px -20px rgba(0,0,0,.5);
+  padding:34px 28px; max-width:380px; width:100%; text-align:center;
+}
+.gate-emoji{font-size:40px; margin-bottom:8px;}
+.gate-card h2{font-family:'Playfair Display',serif; font-size:22px; margin:0 0 6px;}
+.gate-card p{font-size:13.5px; opacity:.7; margin:0 0 16px;}
+.gate-card input{
+  width:100%; font-size:14px; padding:11px 13px; border:1px solid var(--line); border-radius:8px;
+  background:#fff; color:var(--ink); margin-bottom:10px; text-align:center;
+}
+.gate-error{color:var(--red-dark); font-size:12px; min-height:14px; margin:2px 0 4px;}
+.gate-divider{font-size:11px; opacity:.5; margin:10px 0; text-transform:uppercase; letter-spacing:.08em;}
+.gate-skip{
+  background:none; border:none; color:var(--red-dark); font-size:13px; font-weight:600; cursor:pointer; text-decoration:underline;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Airmail · Send with love</div>
+  <h1>Friendship <span class="ampersand">&amp;</span> Mail</h1>
+  <p class="subtitle">Design a postcard, pick a stamp, seal an envelope — then send it your way for Friendship Day.</p>
+</header>
+
+<div class="landing-gate" id="landingGate" style="display:none;">
+  <div class="gate-card">
+    <div class="gate-emoji">💌</div>
+    <h2>Got a card code from a friend?</h2>
+    <p>Paste it below to open the card they made for you.</p>
+    <input type="text" id="gateCodeInput" placeholder="Paste the card code here">
+    <button class="dl-btn" id="gateOpenBtn">Open my card</button>
+    <p class="gate-error" id="gateError"></p>
+    <div class="gate-divider">or</div>
+    <button class="gate-skip" id="gateSkipBtn">Create your own card →</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ CONTROL PANEL ============ -->
+  <div class="panel">
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="theme">Theme</div>
+      <div class="tab" data-tab="note">Note</div>
+      <div class="tab" data-tab="deco">Decorate</div>
+      <div class="tab" data-tab="stamp">Stamp</div>
+      <div class="tab" data-tab="envelope">Envelope</div>
+    </div>
+
+    <div class="tab-panels">
+
+      <!-- THEME -->
+      <div class="tab-panel active" data-panel="theme">
+        <div class="field">
+          <label>Choose a card theme</label>
+          <div class="theme-filter" id="themeFilter">
+            <div class="theme-filter-opt active" data-cat="all">All (40)</div>
+            <div class="theme-filter-opt" data-cat="girls">For Her</div>
+            <div class="theme-filter-opt" data-cat="boys">For Him</div>
+            <div class="theme-filter-opt" data-cat="neutral">Neutral</div>
+          </div>
+          <div class="theme-grid" id="themeGrid"></div>
+        </div>
+        <div class="field">
+          <label>Headline on card front</label>
+          <input type="text" id="titleInput" value="Happy Friendship Day" maxlength="40">
+        </div>
+      </div>
+
+      <!-- NOTE -->
+      <div class="tab-panel" data-panel="note">
+        <div class="field">
+          <label>Your note (appears on the back, postcard-style)</label>
+          <textarea id="noteInput" rows="6" maxlength="280">Dear friend, thank you for every laugh, every late-night chat, and every time you showed up. Grateful for you today and always.</textarea>
+        </div>
+        <div class="field">
+          <label>Note handwriting style</label>
+          <div class="font-choices" id="fontChoices">
+            <div class="font-chip active" data-font="caveat" style="font-family:'Caveat',cursive;">Caveat</div>
+            <div class="font-chip" data-font="playfair" style="font-family:'Playfair Display',serif;">Playfair</div>
+            <div class="font-chip" data-font="work" style="font-family:'Work Sans',sans-serif;">Work Sans</div>
+            <div class="font-chip" data-font="typewriter" style="font-family:'Special Elite',monospace;">Typewriter</div>
+            <div class="font-chip" data-font="pacifico" style="font-family:'Pacifico',cursive;">Pacifico</div>
+            <div class="font-chip" data-font="indie" style="font-family:'Indie Flower',cursive;">Indie Flower</div>
+            <div class="font-chip" data-font="quicksand" style="font-family:'Quicksand',sans-serif;">Quicksand</div>
+            <div class="font-chip" data-font="dancing" style="font-family:'Dancing Script',cursive;">Dancing Script</div>
+            <div class="font-chip" data-font="shadows" style="font-family:'Shadows Into Light',cursive;">Shadows</div>
+            <div class="font-chip" data-font="poppins" style="font-family:'Poppins',sans-serif;">Poppins</div>
+            <div class="font-chip" data-font="nunito" style="font-family:'Nunito',sans-serif;">Nunito</div>
+            <div class="font-chip" data-font="greatvibes" style="font-family:'Great Vibes',cursive;">Great Vibes</div>
+            <div class="font-chip" data-font="sacramento" style="font-family:'Sacramento',cursive;">Sacramento</div>
+            <div class="font-chip" data-font="satisfy" style="font-family:'Satisfy',cursive;">Satisfy</div>
+            <div class="font-chip" data-font="kalam" style="font-family:'Kalam',cursive;">Kalam</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Addressed to</label>
+          <input type="text" id="cardToInput" value="My Best Friend" maxlength="30">
+        </div>
+      </div>
+
+      <!-- DECORATE -->
+      <div class="tab-panel" data-panel="deco">
+        <div class="field">
+          <label>Add a photo (drag to place on the front)</label>
+          <label class="upload-btn">📷 Upload photo
+            <input type="file" id="photoInput" accept="image/*" class="file-hidden">
+          </label>
+          <div class="hint" id="photoHint"></div>
+        </div>
+        <div class="field">
+          <label>Stickers — tap to add, drag to arrange</label>
+          <div class="sticker-grid" id="stickerGrid"></div>
+          <div class="placed-list" id="placedList"></div>
+        </div>
+      </div>
+
+      <!-- STAMP -->
+      <div class="tab-panel" data-panel="stamp">
+        <div class="field">
+          <label>Engraved floral motif</label>
+          <div class="motif-grid" id="motifGrid"></div>
+          <label class="upload-btn">🖼️ Use my own photo instead
+            <input type="file" id="stampPhotoInput" accept="image/*" class="file-hidden">
+          </label>
+        </div>
+        <div class="field">
+          <label>Stamp color</label>
+          <div class="color-swatches" id="stampColorSwatches"></div>
+        </div>
+        <div class="field">
+          <label>Denomination text</label>
+          <input type="text" id="stampTextInput" value="FRIENDSHIP" maxlength="16">
+        </div>
+        <div class="field">
+          <label class="checkbox-row"><input type="checkbox" id="postmarkToggle" checked> Add a postmark cancellation mark</label>
+        </div>
+      </div>
+
+      <!-- ENVELOPE -->
+      <div class="tab-panel" data-panel="envelope">
+        <div class="field">
+          <label>Envelope color</label>
+          <div class="color-swatches" id="envColorSwatches"></div>
+        </div>
+        <div class="field">
+          <label>Pattern</label>
+          <div class="pattern-choices" id="patternChoices">
+            <div class="pattern-opt active" data-pattern="solid">Solid</div>
+            <div class="pattern-opt" data-pattern="stripes">Airmail</div>
+            <div class="pattern-opt" data-pattern="dots">Dotted</div>
+            <div class="pattern-opt" data-pattern="gingham">Gingham</div>
+            <div class="pattern-opt" data-pattern="hearts">Hearts</div>
+            <div class="pattern-opt" data-pattern="kraft">Kraft fleck</div>
+            <div class="pattern-opt" data-pattern="scallop">Scallop</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Wax seal</label>
+          <div class="pattern-choices" id="sealStyleChoices" style="margin-bottom:9px;">
+            <div class="pattern-opt active" data-seal="floral">🌿 Floral relief</div>
+            <div class="pattern-opt" data-seal="glyph">✒️ Initial / symbol</div>
+          </div>
+          <div class="row2" id="sealTextRow" style="display:none;">
+            <input type="text" id="sealTextInput" value="❤" maxlength="2" placeholder="Symbol or initial">
+          </div>
+          <div class="color-swatches" id="sealColorSwatches" style="margin-top:8px;"></div>
+        </div>
+        <div class="field">
+          <label>From</label>
+          <input type="text" id="fromInput" value="Me" maxlength="24">
+        </div>
+        <div class="field">
+          <label>To</label>
+          <input type="text" id="toInput" value="My Best Friend" maxlength="24">
+        </div>
+        <p class="small-note">Your card's stamp design appears automatically on the envelope too.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ PREVIEW ============ -->
+  <div class="preview-col">
+    <div class="preview-toolbar">
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="btnModeEnvelope">Envelope</button>
+        <button class="mode-btn" id="btnModeCard">Postcard</button>
+      </div>
+      <div class="dl-buttons">
+        <button class="dl-btn secondary" id="btnFlip" title="Flip card">↺ Flip</button>
+        <button class="dl-btn" id="btnDownload">⬇ Save image to send</button>
+        <button class="dl-btn secondary" id="btnShare">🔗 Get card code</button>
+      </div>
+    </div>
+
+    <div class="share-panel" id="sharePanel" style="display:none;">
+      <input type="text" id="shareLinkInput" readonly>
+      <button class="dl-btn" id="btnCopyLink">Copy code</button>
+    </div>
+    <p class="share-hint" id="shareHint"></p>
+
+    <div class="code-toggle" id="codeToggle">Test a card code here →</div>
+    <div class="share-panel" id="loadPanel" style="display:none;">
+      <input type="text" id="loadCodeInput" placeholder="Paste a card code here">
+      <button class="dl-btn secondary" id="btnLoadCode">Open</button>
+    </div>
+    <p class="share-hint" id="loadHint"></p>
+
+    <div class="banner" id="receivedBanner" style="display:none;">
+      <span>💌 You've received a Friendship Day card! Tap the envelope to open it.</span>
+      <button id="btnStartFresh">Start my own</button>
+    </div>
+    <div class="swipe-hint" id="swipeHint" style="display:none;">
+      <div class="chevron">⌃</div>
+      <div>Swipe up to make your own card</div>
+    </div>
+
+    <div class="stage" id="stage">
+
+      <!-- Envelope -->
+      <div class="envelope" id="envelope">
+        <div class="env-fold-left"></div>
+        <div class="env-fold-right"></div>
+        <div class="env-body" id="envBody">
+          <div class="env-from" id="envFrom">From:<br><b>Me</b></div>
+          <div class="env-address">
+            <div class="to-line">To,</div>
+            <div class="to-name" id="envToName">My Best Friend</div>
+          </div>
+        </div>
+        <div class="card-slot" id="cardSlotPreview"></div>
+        <div class="env-flap" id="envFlap"></div>
+        <div class="env-seal" id="envSeal"><div class="env-seal-content" id="envSealContent"></div></div>
+        <div class="env-stamp-wrap" id="envStampWrap"></div>
+        <div class="open-hint">✦ tap the envelope to open ✦</div>
+      </div>
+
+      <!-- Postcard -->
+      <div class="card3d" id="card3d" style="display:none;">
+        <div class="face front" id="cardFront">
+          <div class="card-title" id="cardTitleEl">Happy Friendship Day</div>
+        </div>
+        <div class="face back" id="cardBack">
+          <div class="pc-divider"></div>
+          <div class="pc-note" id="pcNote"></div>
+          <div class="pc-right">
+            <div id="pcStampWrap"></div>
+            <div class="pc-lines"><div></div><div></div><div></div></div>
+            <div class="pc-to" id="pcTo">My Best Friend</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>Made with ✉ for Friendship Day — everything renders right in your browser.</footer>
+
+<script>
+(function(){
+
+// ---------------- data ----------------
+const THEMES = [
+  {id:'doodle', name:'Playful Doodle', cat:'girls', bg:'radial-gradient(circle at 15% 15%, #fff 0 3%, transparent 3%), radial-gradient(circle at 85% 25%, #fff 0 2.4%, transparent 2.4%), radial-gradient(circle at 30% 85%, #fff 0 2%, transparent 2%), linear-gradient(135deg,#ffd9e8,#ffe8b3)', color:'#a8325c', font:"'Playfair Display', serif", radius:'18px'},
+  {id:'vintage', name:'Vintage Elegant', cat:'neutral', bg:'linear-gradient(160deg,#f3ead1,#e3cf9f)', color:'#5b3a20', font:"'Playfair Display', serif", radius:'6px', border:'2px solid #b98b2e'},
+  {id:'modern', name:'Bright Modern', cat:'neutral', bg:'linear-gradient(135deg,#ff6b6b,#ffd93d 55%,#4d96ff)', color:'#ffffff', font:"'Work Sans', sans-serif", radius:'4px'},
+  {id:'botanical', name:'Botanical', cat:'neutral', bg:'radial-gradient(circle at 10% 10%,#c9e4c5,transparent 40%), radial-gradient(circle at 90% 90%,#a9cba0,transparent 40%), linear-gradient(160deg,#eef5e6,#d8e8cf)', color:'#33512e', font:"'Playfair Display', serif", radius:'14px'},
+  {id:'pastel', name:'Pastel Dream', cat:'girls', bg:'linear-gradient(135deg,#ffd6e8,#d7d3f7 50%,#c7e9f1)', color:'#6a4a7a', font:"'Quicksand', sans-serif", radius:'20px'},
+  {id:'sunset', name:'Sunset Glow', cat:'girls', bg:'linear-gradient(160deg,#ffcf8a,#ff9fb0 55%,#c78ae8)', color:'#7a2c4d', font:"'Dancing Script', cursive", radius:'16px'},
+  {id:'ocean', name:'Ocean Breeze', cat:'boys', bg:'linear-gradient(150deg,#bfe9e0,#a8d8e8 55%,#8fb8e6)', color:'#1f4d5c', font:"'Quicksand', sans-serif", radius:'14px'},
+  {id:'lavender', name:'Lavender Fields', cat:'girls', bg:'radial-gradient(circle at 20% 20%,#e9def5,transparent 45%), linear-gradient(160deg,#ded1f0,#c8b8e8)', color:'#4a3266', font:"'Playfair Display', serif", radius:'12px'},
+  {id:'starlit', name:'Starlit Night', cat:'neutral', bg:'radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1.5px 1.5px at 30% 62%, #fff, transparent), radial-gradient(1px 1px at 52% 24%, #fff, transparent), radial-gradient(1.5px 1.5px at 68% 70%, #fff, transparent), radial-gradient(1px 1px at 80% 30%, #fff, transparent), radial-gradient(1.5px 1.5px at 90% 80%, #fff, transparent), radial-gradient(1px 1px at 22% 85%, #fff, transparent), radial-gradient(1.5px 1.5px at 40% 12%, #fff, transparent), radial-gradient(28px 28px at 82% 20%, rgba(255,244,214,.9), rgba(255,244,214,0) 70%), linear-gradient(165deg,#141c33,#1f2a4a 55%,#2c3a63)', color:'#f4ecd8', font:"'Playfair Display', serif", radius:'14px', special:'starlit'},
+  {id:'holo', name:'Holographic Shimmer', cat:'neutral', bg:'linear-gradient(115deg,#ffb4e6,#b4e0ff 25%,#c9ffcf 50%,#fff3ad 75%,#ffb4e6 100%)', color:'#3a2b52', font:"'Quicksand', sans-serif", radius:'20px', special:'holo'},
+
+  // ---- For Her (10) ----
+  {id:'blush', name:'Blush Bouquet', cat:'girls', bg:'linear-gradient(140deg,#ffe3ec,#ffc9dd 60%,#ffb0cf)', color:'#8a2c52', font:"'Dancing Script', cursive", radius:'20px'},
+  {id:'rosegold', name:'Rose Gold', cat:'girls', bg:'linear-gradient(135deg,#f6d6c8,#e8b7a4 45%,#d99a86)', color:'#6b2f24', font:"'Playfair Display', serif", radius:'10px'},
+  {id:'cherryblossom', name:'Cherry Blossom', cat:'girls', bg:'radial-gradient(circle at 80% 10%,#ffd9e6,transparent 45%), linear-gradient(160deg,#fff0f4,#ffd3e2)', color:'#a8325c', font:"'Shadows Into Light', cursive", radius:'18px'},
+  {id:'bubblegum', name:'Bubblegum Pop', cat:'girls', bg:'linear-gradient(135deg,#ff9fd6,#ffd6f2 50%,#c9b8ff)', color:'#6b1f5c', font:"'Quicksand', sans-serif", radius:'22px'},
+  {id:'peachfuzz', name:'Peach Fuzz', cat:'girls', bg:'linear-gradient(150deg,#ffd9b8,#ffc1cf 55%,#ffb0c9)', color:'#8a3d2c', font:"'Caveat', cursive", radius:'18px'},
+  {id:'berrysweet', name:'Berry Sweet', cat:'girls', bg:'linear-gradient(140deg,#e8a3c0,#c780b8 55%,#9c5fa8)', color:'#fdf3f8', font:"'Playfair Display', serif", radius:'14px'},
+  {id:'magnolia', name:'Magnolia', cat:'girls', bg:'radial-gradient(circle at 15% 20%,#fff,transparent 40%), linear-gradient(160deg,#fbeee6,#f3d9d0)', color:'#7a3f3a', font:"'Dancing Script', cursive", radius:'16px'},
+  {id:'cottoncandy', name:'Cotton Candy Sky', cat:'girls', bg:'linear-gradient(120deg,#c9e8ff,#e0c9ff 50%,#ffc9e8)', color:'#4a3a6a', font:"'Quicksand', sans-serif", radius:'20px'},
+  {id:'coralreef', name:'Coral Reef', cat:'girls', bg:'linear-gradient(150deg,#ff9a8a,#ffc1a3 55%,#ffe0b3)', color:'#7a2c1f', font:"'Playfair Display', serif", radius:'14px'},
+  {id:'orchid', name:'Orchid Whisper', cat:'girls', bg:'linear-gradient(140deg,#e6c9f0,#d1a3e8 55%,#b87fd9)', color:'#3a1f4a', font:"'Dancing Script', cursive", radius:'18px'},
+
+  // ---- For Him (10) ----
+  {id:'midnightnavy', name:'Midnight Navy', cat:'boys', bg:'linear-gradient(160deg,#1c2a45,#0f1830)', color:'#e8ecf5', font:"'Work Sans', sans-serif", radius:'6px'},
+  {id:'foresttrail', name:'Forest Trail', cat:'boys', bg:'linear-gradient(150deg,#3a5a3f,#233a28)', color:'#eef3ea', font:"'Special Elite', monospace", radius:'6px'},
+  {id:'slatestorm', name:'Slate Storm', cat:'boys', bg:'linear-gradient(140deg,#5c6b78,#37424c)', color:'#f2f5f7', font:"'Work Sans', sans-serif", radius:'5px'},
+  {id:'charcoalgrit', name:'Charcoal Grit', cat:'boys', bg:'linear-gradient(160deg,#3a3532,#221e1c)', color:'#f0ece6', font:"'Special Elite', monospace", radius:'4px'},
+  {id:'denimblue', name:'Denim Blue', cat:'boys', bg:'linear-gradient(135deg,#3f6b9c,#254a72)', color:'#eef5ff', font:"'Work Sans', sans-serif", radius:'8px'},
+  {id:'olivefield', name:'Olive Field', cat:'boys', bg:'linear-gradient(150deg,#6b7a4a,#4a5732)', color:'#f4f6ec', font:"'Special Elite', monospace", radius:'6px'},
+  {id:'steelgunmetal', name:'Steel Gunmetal', cat:'boys', bg:'linear-gradient(140deg,#4a5560,#2b3238)', color:'#eef1f3', font:"'Work Sans', sans-serif", radius:'4px'},
+  {id:'deepocean', name:'Deep Ocean', cat:'boys', bg:'linear-gradient(160deg,#134e6b,#0a2c3d)', color:'#e6f3f8', font:"'Playfair Display', serif", radius:'8px'},
+  {id:'autumnrust', name:'Autumn Rust', cat:'boys', bg:'linear-gradient(150deg,#a85c34,#7a3d21)', color:'#fbf0e6', font:"'Special Elite', monospace", radius:'6px'},
+  {id:'graphitemtn', name:'Graphite Mountain', cat:'boys', bg:'linear-gradient(160deg,#5a6875,#33404a 55%,#1c2530)', color:'#eef2f5', font:"'Work Sans', sans-serif", radius:'6px'},
+
+  // ---- Neutral / For All (10) ----
+  {id:'goldenhour', name:'Golden Hour', cat:'neutral', bg:'linear-gradient(150deg,#ffd98a,#ff9f6b 55%,#e8695a)', color:'#4a1f18', font:"'Playfair Display', serif", radius:'12px'},
+  {id:'citrusburst', name:'Citrus Burst', cat:'neutral', bg:'linear-gradient(135deg,#ffe082,#ffb347 55%,#ff8a5c)', color:'#4a2c0f', font:"'Quicksand', sans-serif", radius:'16px'},
+  {id:'desertdune', name:'Desert Dune', cat:'neutral', bg:'linear-gradient(150deg,#e8cfa0,#d1a86b)', color:'#4a3220', font:"'Special Elite', monospace", radius:'8px'},
+  {id:'rainbowprism', name:'Rainbow Prism', cat:'neutral', bg:'linear-gradient(115deg,#ff9a9a,#ffd58a 25%,#b8e8a3 50%,#8ad1e8 75%,#c1a3ff 100%)', color:'#2b2b3a', font:"'Quicksand', sans-serif", radius:'18px'},
+  {id:'monoink', name:'Monochrome Ink', cat:'neutral', bg:'linear-gradient(160deg,#e8e6e0,#b8b4ab)', color:'#232019', font:"'Playfair Display', serif", radius:'4px', border:'2px solid #232019'},
+  {id:'terracotta', name:'Terracotta Clay', cat:'neutral', bg:'linear-gradient(150deg,#d98a6b,#b8593f)', color:'#fbeee6', font:"'Special Elite', monospace", radius:'8px'},
+  {id:'mintfresh', name:'Mint Fresh', cat:'neutral', bg:'linear-gradient(140deg,#c1f0d9,#8fd6b3)', color:'#1f4a35', font:"'Quicksand', sans-serif", radius:'16px'},
+  {id:'sunflower', name:'Sunflower Field', cat:'neutral', bg:'linear-gradient(150deg,#ffe066,#f0b93d 55%,#c98a2c)', color:'#4a3010', font:"'Playfair Display', serif", radius:'12px'},
+  {id:'cosmicnebula', name:'Cosmic Nebula', cat:'neutral', bg:'radial-gradient(circle at 25% 20%, rgba(255,180,230,.5), transparent 45%), radial-gradient(circle at 75% 70%, rgba(140,200,255,.5), transparent 45%), linear-gradient(160deg,#2b1f4a,#1a1230)', color:'#f0e6ff', font:"'Playfair Display', serif", radius:'14px'},
+  {id:'papertwine', name:'Paper & Twine', cat:'neutral', bg:'linear-gradient(160deg,#f3ece0,#ddd0ba)', color:'#4a3a26', font:"'Special Elite', monospace", radius:'6px', border:'2px dashed #a9835a'},
+];
+
+const STICKERS = ['🌸','🎈','🎉','❤️','🌟','✨','🍰','🎁','☀️','🌈','🕊️','🍀','🧸','🍩','🌻','🥳','💌','🦋','🍫','🎊','🍓','🌼','🫶','🧁','🍭','🪁','🌙','🍋'];
+const COLORS = ['#9b3b32','#3f6357','#24344a','#b98b2e','#a8325c','#4d5b2c','#5b3a20','#ffb4c6','#ffcf8a','#fff1a8','#b8e3b0','#a8d8e8','#c9c2f0','#f0b8dd'];
+const ENV_COLORS = ['#d8bd8f','#e8d3a3','#c9dccb','#e3c7c2','#c7d6e3','#f0e6d0','#3f6357','#ffe1ec','#ffe9c7','#e3f3d6','#d6e8f5','#e6ddf5','#fbdcd0','#d0e8e3'];
+
+const PATTERNS = {
+  solid:  ()=>({image:'none', size:'auto'}),
+  stripes:()=>({image:'repeating-linear-gradient(135deg, rgba(255,255,255,.22) 0 10px, transparent 10px 20px)', size:'auto'}),
+  dots:   ()=>({image:'radial-gradient(rgba(255,255,255,.4) 1.6px, transparent 1.6px)', size:'14px 14px'}),
+  gingham:()=>({image:'repeating-linear-gradient(0deg, rgba(255,255,255,.32) 0 8px, transparent 8px 16px), repeating-linear-gradient(90deg, rgba(255,255,255,.32) 0 8px, transparent 8px 16px)', size:'auto'}),
+  hearts: ()=>({image:`url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><path d="M14 23s-8-5-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-8 11-10 11z" fill="rgba(255,255,255,0.5)"/></svg>')}")`, size:'28px 28px'}),
+  kraft:  ()=>({image:'radial-gradient(circle at 20% 30%, rgba(60,40,20,.16) 1px, transparent 1.6px), radial-gradient(circle at 65% 70%, rgba(60,40,20,.14) 1.2px, transparent 1.8px), radial-gradient(circle at 80% 15%, rgba(60,40,20,.12) 1px, transparent 1.6px), radial-gradient(circle at 35% 85%, rgba(60,40,20,.14) 1px, transparent 1.6px)', size:'44px 44px'}),
+  scallop:()=>({image:'radial-gradient(circle at 10px 10px, rgba(255,255,255,.38) 8px, transparent 8.5px)', size:'20px 20px'})
+};
+
+// ---------------- state ----------------
+let state = {
+  theme:'vintage',
+  title:'Happy Friendship Day',
+  note:'Dear friend, thank you for every laugh, every late-night chat, and every time you showed up. Grateful for you today and always.',
+  noteFont:'caveat',
+  cardTo:'My Best Friend',
+  photo:null,
+  stickers:[], // {id, emoji, x, y} percentages relative to front face
+  stamp:{ motif:'branch', photo:null, color:'#b98b2e', text:'FRIENDSHIP', postmark:true },
+  envelope:{ color:'#d8bd8f', pattern:'solid', sealStyle:'floral', sealText:'❤', sealColor:'#b98b2e', from:'Me', to:'My Best Friend' }
+};
+let stickerSeq = 1;
+let mode = 'envelope'; // envelope | card
+let flipped = false;
+
+const FONT_MAP = {
+  caveat:"'Caveat', cursive",
+  playfair:"'Playfair Display', serif",
+  work:"'Work Sans', sans-serif",
+  typewriter:"'Special Elite', monospace",
+  pacifico:"'Pacifico', cursive",
+  indie:"'Indie Flower', cursive",
+  quicksand:"'Quicksand', sans-serif",
+  dancing:"'Dancing Script', cursive",
+  shadows:"'Shadows Into Light', cursive",
+  poppins:"'Poppins', sans-serif",
+  nunito:"'Nunito', sans-serif",
+  greatvibes:"'Great Vibes', cursive",
+  sacramento:"'Sacramento', cursive",
+  satisfy:"'Satisfy', cursive",
+  kalam:"'Kalam', cursive"
+};
+const FONT_SIZE_MAP = {
+  caveat:'18px', playfair:'14px', work:'14px', typewriter:'12.5px',
+  pacifico:'14px', indie:'16px', quicksand:'14.5px', dancing:'19px', shadows:'17px',
+  poppins:'13.5px', nunito:'14.5px', greatvibes:'21px', sacramento:'20px', satisfy:'17px', kalam:'15px'
+};
+
+// ---------------- helpers ----------------
+function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
+
+function flowerUnit(cx,cy,scale){
+  return `<g transform="translate(${cx},${cy}) scale(${scale})">
+    <ellipse cx="0" cy="-6" rx="3.3" ry="5"/>
+    <ellipse cx="0" cy="-6" rx="3.3" ry="5" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-6" rx="3.3" ry="5" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-6" rx="3.3" ry="5" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-6" rx="3.3" ry="5" transform="rotate(288)"/>
+    <circle r="2.1"/>
+  </g>`;
+}
+function flowerUnit8(cx,cy,scale){
+  let petals = '';
+  for(let i=0;i<8;i++){ petals += `<ellipse cx="0" cy="-5.5" rx="3" ry="4.6" transform="rotate(${i*45})"/>`; }
+  return `<g transform="translate(${cx},${cy}) scale(${scale})">${petals}<circle r="2"/></g>`;
+}
+function tulip(cx,cy,scale){
+  return `<g transform="translate(${cx},${cy}) scale(${scale})">
+    <path d="M-5,10 C-6,0 -6,-8 0,-10 C6,-8 6,0 5,10 Z"/>
+    <path d="M0,10 L0,17" stroke="currentColor" stroke-width="1.3" fill="none"/>
+  </g>`;
+}
+const MOTIFS = {
+  branch: ()=>`
+    <path d="M18,86 C34,72 46,54 58,38 C66,27 70,20 76,13" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="27" cy="76" rx="6" ry="2.3" transform="rotate(-40 27 76)"/>
+    <ellipse cx="41" cy="60" rx="6.4" ry="2.5" transform="rotate(-35 41 60)"/>
+    <ellipse cx="53" cy="45" rx="5.6" ry="2.2" transform="rotate(-28 53 45)"/>
+    <ellipse cx="65" cy="29" rx="5" ry="2" transform="rotate(-22 65 29)"/>
+    ${flowerUnit(30,70,1.1)}
+    ${flowerUnit(50,44,0.85)}
+    ${flowerUnit(73,15,0.65)}`,
+  sprig: ()=>`
+    <path d="M50,90 C50,68 50,45 50,22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="42" cy="66" rx="7" ry="2.6" transform="rotate(35 42 66)"/>
+    <ellipse cx="58" cy="66" rx="7" ry="2.6" transform="rotate(-35 58 66)"/>
+    <ellipse cx="40" cy="46" rx="6.4" ry="2.4" transform="rotate(30 40 46)"/>
+    <ellipse cx="60" cy="46" rx="6.4" ry="2.4" transform="rotate(-30 60 46)"/>
+    ${flowerUnit(50,18,1.25)}`,
+  wreath: ()=>`
+    <ellipse cx="50" cy="18" rx="6.5" ry="2.5" transform="rotate(0 50 18)"/>
+    <ellipse cx="72" cy="28" rx="6.5" ry="2.5" transform="rotate(48 72 28)"/>
+    <ellipse cx="80" cy="50" rx="6.5" ry="2.5" transform="rotate(90 80 50)"/>
+    <ellipse cx="72" cy="72" rx="6.5" ry="2.5" transform="rotate(132 72 72)"/>
+    <ellipse cx="50" cy="82" rx="6.5" ry="2.5" transform="rotate(180 50 82)"/>
+    <ellipse cx="28" cy="72" rx="6.5" ry="2.5" transform="rotate(228 28 72)"/>
+    <ellipse cx="20" cy="50" rx="6.5" ry="2.5" transform="rotate(270 20 50)"/>
+    <ellipse cx="28" cy="28" rx="6.5" ry="2.5" transform="rotate(312 28 28)"/>
+    ${flowerUnit(50,50,0.95)}`,
+  single: ()=>`${flowerUnit(50,50,1.7)}`,
+  rosebud: ()=>`${flowerUnit8(50,50,1.35)}<g transform="rotate(22 50 50)">${flowerUnit8(50,50,0.7)}</g>`,
+  bouquet: ()=>`
+    ${flowerUnit(35,58,0.9)}${flowerUnit(58,50,1.05)}${flowerUnit(48,35,0.8)}
+    <ellipse cx="30" cy="70" rx="6" ry="2.4" transform="rotate(30 30 70)"/>
+    <ellipse cx="68" cy="65" rx="6" ry="2.4" transform="rotate(-25 68 65)"/>`,
+  cornerspray: ()=>`
+    <path d="M15,90 C25,75 35,60 40,45" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    ${flowerUnit(18,85,0.9)}${flowerUnit(30,68,1.0)}${flowerUnit(40,45,0.75)}
+    <ellipse cx="24" cy="76" rx="5" ry="2" transform="rotate(-35 24 76)"/>`,
+  tuliprow: ()=>`
+    ${tulip(30,55,1)}${tulip(50,50,1.15)}${tulip(70,55,1)}
+    <ellipse cx="30" cy="66" rx="5" ry="1.8" transform="rotate(20 30 66)"/>
+    <ellipse cx="70" cy="66" rx="5" ry="1.8" transform="rotate(-20 70 66)"/>`,
+  vinetrail: ()=>`
+    <path d="M12,90 C28,80 20,60 38,52 C56,44 48,24 68,14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    ${flowerUnit(20,82,0.8)}${flowerUnit(40,50,0.95)}${flowerUnit(64,18,0.8)}
+    <ellipse cx="30" cy="68" rx="5" ry="2" transform="rotate(-30 30 68)"/>
+    <ellipse cx="52" cy="34" rx="5" ry="2" transform="rotate(-20 52 34)"/>`,
+  lotus: ()=>`${flowerUnit8(50,50,1.5)}${flowerUnit(50,50,0.6)}`,
+  garland: ()=>`
+    <path d="M10,50 Q30,35 50,50 T90,50" stroke="currentColor" stroke-width="1.6" fill="none"/>
+    ${flowerUnit(20,46,0.55)}${flowerUnit(50,50,0.6)}${flowerUnit(80,46,0.55)}`,
+  sunburst: ()=>`${flowerUnit(50,50,1.5)}<g transform="rotate(36 50 50)">${flowerUnit(50,50,1.5)}</g>`,
+  cluster: ()=>`
+    ${flowerUnit(30,30,0.7)}${flowerUnit(65,25,0.9)}${flowerUnit(75,60,0.65)}${flowerUnit(35,70,1.0)}${flowerUnit(58,55,0.55)}
+    <ellipse cx="45" cy="45" rx="5" ry="2" transform="rotate(15 45 45)"/>
+    <ellipse cx="55" cy="70" rx="5" ry="2" transform="rotate(-20 55 70)"/>`
+};
+function floralLayer(motifKey, dx, dy, color, opacity){
+  return `<g transform="translate(${dx},${dy})" fill="${color}" opacity="${opacity}" color="${color}">${MOTIFS[motifKey]()}</g>`;
+}
+function floralSVG(motifKey, colorHex){
+  const m = MOTIFS[motifKey] ? motifKey : 'branch';
+  return `<svg class="wax-motif" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+    ${floralLayer(m, 1.7, 1.9, 'rgba(0,0,0,.55)', .55)}
+    ${floralLayer(m, -1.2, -1.3, 'rgba(255,255,255,.7)', .5)}
+    ${floralLayer(m, 0, 0, colorHex, 1)}
+  </svg>`;
+}
+
+function stampHTML(size){ // size: 'lg' | 'sm'
+  const s = state.stamp;
+  const dim = size==='lg' ? 64 : 50;
+  const denomPx = size==='lg' ? 8 : 6.5;
+  const inner = s.photo
+    ? `<img class="wax-photo" src="${s.photo}">`
+    : `<div class="wax-relief">${floralSVG(s.motif || 'branch', s.color)}</div>`;
+  return `<div class="wax-stamp" style="--stamp-color:${s.color}; --stamp-color-light:${lighten(s.color, 60)}; --wax-dim:${dim}px;">
+    <div class="wax-medallion">${inner}</div>
+    <div class="wax-denom" style="font-size:${denomPx}px">${escapeHtml(s.text)}</div>
+  </div>`;
+}
+
+function postmarkSVG(size){
+  return `<svg class="postmark" width="${size}" height="${size}" viewBox="0 0 100 100" style="position:absolute; top:-6px; right:-10px;">
+    <circle cx="50" cy="50" r="34" fill="none" stroke="#2b2b2b" stroke-width="2"/>
+    <circle cx="50" cy="50" r="28" fill="none" stroke="#2b2b2b" stroke-width="1.2"/>
+    <text x="50" y="30" text-anchor="middle" font-family="Special Elite, monospace" font-size="8" fill="#2b2b2b">FRIENDSHIP</text>
+    <text x="50" y="72" text-anchor="middle" font-family="Special Elite, monospace" font-size="8" fill="#2b2b2b">DAY MAIL</text>
+    <line x1="4" y1="38" x2="30" y2="30" stroke="#2b2b2b" stroke-width="2"/>
+    <line x1="4" y1="48" x2="30" y2="42" stroke="#2b2b2b" stroke-width="2"/>
+    <line x1="70" y1="30" x2="96" y2="38" stroke="#2b2b2b" stroke-width="2"/>
+    <line x1="70" y1="42" x2="96" y2="48" stroke="#2b2b2b" stroke-width="2"/>
+  </svg>`;
+}
+
+function escapeHtml(str){
+  return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ---------------- render ----------------
+function renderTheme(){
+  const t = THEMES.find(x=>x.id===state.theme);
+  const front = document.getElementById('cardFront');
+  front.style.background = t.bg;
+  front.style.color = t.color;
+  front.style.borderRadius = t.radius;
+  front.style.border = t.border || '1px solid rgba(0,0,0,.12)';
+  front.classList.toggle('holo-anim', t.special==='holo');
+  document.getElementById('cardTitleEl').style.fontFamily = t.font;
+  document.getElementById('cardTitleEl').style.fontSize = (state.theme==='modern'||state.theme==='starlit') ? '26px' : '24px';
+  document.getElementById('cardTitleEl').style.textShadow =
+    state.theme==='modern' ? '0 2px 10px rgba(0,0,0,.25)' :
+    state.theme==='starlit' ? '0 0 14px rgba(255,224,150,.8), 0 0 30px rgba(255,224,150,.4)' :
+    state.theme==='holo' ? '0 2px 14px rgba(255,255,255,.6)' : 'none';
+  document.getElementById('card3d').style.borderRadius = t.radius;
+
+  document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('active', c.dataset.theme===state.theme));
+}
+
+function renderTitle(){
+  document.getElementById('cardTitleEl').textContent = state.title;
+}
+
+function renderNote(){
+  const pn = document.getElementById('pcNote');
+  pn.textContent = state.note;
+  pn.style.fontFamily = FONT_MAP[state.noteFont];
+  pn.style.fontSize = FONT_SIZE_MAP[state.noteFont] || '14px';
+  document.getElementById('pcTo').textContent = state.cardTo;
+}
+
+function renderPhoto(){
+  let img = document.querySelector('.card-photo');
+  if(!state.photo){
+    if(img) img.remove();
+    document.getElementById('photoHint').textContent = '';
+    return;
+  }
+  document.getElementById('photoHint').textContent = 'Uploaded — drag it around on the postcard front.';
+  if(!img){
+    img = document.createElement('img');
+    img.className = 'card-photo';
+    img.style.left = '50%';
+    img.style.top = '38%';
+    img.style.transform = 'translate(-50%,-50%) rotate(-3deg)';
+    makeDraggable(img, document.getElementById('cardFront'));
+    document.getElementById('cardFront').appendChild(img);
+  }
+  img.src = state.photo;
+}
+
+function renderStickers(){
+  const front = document.getElementById('cardFront');
+  front.querySelectorAll('.sticker-el').forEach(n=>n.remove());
+  state.stickers.forEach(s=>{
+    const n = document.createElement('div');
+    n.className = 'sticker-el';
+    n.textContent = s.emoji;
+    n.style.left = s.x + '%';
+    n.style.top = s.y + '%';
+    n.dataset.id = s.id;
+    n.style.transform = 'translate(-50%,-50%)';
+    makeDraggable(n, front, s);
+    front.appendChild(n);
+  });
+  const list = document.getElementById('placedList');
+  list.innerHTML = '';
+  state.stickers.forEach(s=>{
+    const chip = el(`<span class="placed-chip">${s.emoji} <button data-id="${s.id}">×</button></span>`);
+    chip.querySelector('button').onclick = ()=>{
+      state.stickers = state.stickers.filter(x=>x.id!==s.id);
+      renderStickers();
+    };
+    list.appendChild(chip);
+  });
+}
+
+function makeDraggable(node, container, stickerRef){
+  let dragging=false, offX=0, offY=0;
+  const start = (e)=>{
+    dragging=true;
+    node.style.cursor='grabbing';
+    e.preventDefault();
+  };
+  const move = (e)=>{
+    if(!dragging) return;
+    const point = e.touches ? e.touches[0] : e;
+    const rect = container.getBoundingClientRect();
+    let x = ((point.clientX - rect.left)/rect.width)*100;
+    let y = ((point.clientY - rect.top)/rect.height)*100;
+    x = Math.max(4,Math.min(96,x));
+    y = Math.max(4,Math.min(96,y));
+    node.style.left = x+'%';
+    node.style.top = y+'%';
+    if(stickerRef){ stickerRef.x = x; stickerRef.y = y; }
+  };
+  const end = ()=>{ dragging=false; node.style.cursor='grab'; };
+  node.addEventListener('mousedown', start);
+  node.addEventListener('touchstart', start, {passive:false});
+  window.addEventListener('mousemove', move);
+  window.addEventListener('touchmove', move, {passive:false});
+  window.addEventListener('mouseup', end);
+  window.addEventListener('touchend', end);
+}
+
+function renderStamp(){
+  const wrapEnv = document.getElementById('envStampWrap');
+  const wrapPc = document.getElementById('pcStampWrap');
+  wrapEnv.innerHTML = stampHTML('lg') + (state.stamp.postmark ? postmarkSVG(74) : '');
+  wrapEnv.style.position='relative';
+  wrapPc.innerHTML = stampHTML('sm') + (state.stamp.postmark ? postmarkSVG(56) : '');
+  wrapPc.style.position='relative';
+
+  document.querySelectorAll('#motifGrid .motif-opt').forEach(o=>{
+    o.classList.toggle('active', !state.stamp.photo && o.dataset.motif===state.stamp.motif);
+  });
+  document.querySelectorAll('#stampColorSwatches .swatch').forEach(o=>{
+    o.classList.toggle('active', o.dataset.color===state.stamp.color);
+  });
+  renderEnvelopeSeal();
+}
+
+function renderEnvelope(){
+  const body = document.getElementById('envBody');
+  body.style.setProperty('--env-color', state.envelope.color);
+  document.getElementById('envFlap').style.setProperty('--env-flap-color', shade(state.envelope.color));
+  const pat = (PATTERNS[state.envelope.pattern] || PATTERNS.solid)();
+  body.style.backgroundImage = pat.image;
+  body.style.backgroundSize = pat.size;
+  document.getElementById('envFrom').innerHTML = 'From:<br><b>'+escapeHtml(state.envelope.from||'Me')+'</b>';
+  document.getElementById('envToName').textContent = state.envelope.to || 'My Best Friend';
+
+  document.querySelectorAll('#envColorSwatches .swatch').forEach(o=>o.classList.toggle('active', o.dataset.color===state.envelope.color));
+  document.querySelectorAll('#sealColorSwatches .swatch').forEach(o=>o.classList.toggle('active', o.dataset.color===state.envelope.sealColor));
+  document.querySelectorAll('#patternChoices .pattern-opt').forEach(o=>o.classList.toggle('active', o.dataset.pattern===state.envelope.pattern));
+  document.querySelectorAll('#sealStyleChoices .pattern-opt').forEach(o=>o.classList.toggle('active', o.dataset.seal===state.envelope.sealStyle));
+  document.getElementById('sealTextRow').style.display = state.envelope.sealStyle==='glyph' ? 'grid' : 'none';
+  renderEnvelopeSeal();
+}
+
+function renderEnvelopeSeal(){
+  const seal = document.getElementById('envSeal');
+  const content = document.getElementById('envSealContent');
+  seal.style.background = `radial-gradient(circle at 35% 30%, ${lighten(state.envelope.sealColor)}, ${state.envelope.sealColor})`;
+  if(state.envelope.sealStyle === 'glyph'){
+    content.innerHTML = `<span class="glyph">${escapeHtml(state.envelope.sealText || '❤')}</span>`;
+  }else{
+    content.innerHTML = floralSVG(state.stamp.motif || 'branch', state.envelope.sealColor);
+  }
+}
+
+function shade(hex){
+  // slightly darker version for the flap
+  const c = hexToRgb(hex);
+  const d = {r:Math.max(0,c.r-24), g:Math.max(0,c.g-24), b:Math.max(0,c.b-24)};
+  return `rgb(${d.r},${d.g},${d.b})`;
+}
+function lighten(hex, amount){
+  const amt = amount === undefined ? 70 : amount;
+  const c = hexToRgb(hex);
+  const l = {r:Math.min(255,c.r+amt), g:Math.min(255,c.g+amt), b:Math.min(255,c.b+amt)};
+  return `rgb(${l.r},${l.g},${l.b})`;
+}
+function hexToRgb(hex){
+  hex = hex.replace('#','');
+  if(hex.length===3) hex = hex.split('').map(c=>c+c).join('');
+  const num = parseInt(hex,16);
+  return {r:(num>>16)&255, g:(num>>8)&255, b:num&255};
+}
+
+function renderAll(){
+  renderTheme(); renderTitle(); renderNote(); renderPhoto(); renderStickers(); renderStamp(); renderEnvelope();
+}
+
+// ---------------- build static UI ----------------
+function buildThemeGrid(){
+  const grid = document.getElementById('themeGrid');
+  THEMES.forEach(t=>{
+    const c = el(`<div class="theme-card" data-theme="${t.id}" data-cat="${t.cat}"><div class="theme-swatch" style="background:${t.bg}"></div><span>${t.name}</span></div>`);
+    c.onclick = ()=>{ state.theme=t.id; renderTheme(); };
+    grid.appendChild(c);
+  });
+}
+document.getElementById('themeFilter').addEventListener('click', e=>{
+  const opt = e.target.closest('.theme-filter-opt'); if(!opt) return;
+  document.querySelectorAll('.theme-filter-opt').forEach(o=>o.classList.remove('active'));
+  opt.classList.add('active');
+  const cat = opt.dataset.cat;
+  document.querySelectorAll('.theme-card').forEach(c=>{
+    c.style.display = (cat==='all' || c.dataset.cat===cat) ? '' : 'none';
+  });
+});
+function buildStickerGrid(){
+  const grid = document.getElementById('stickerGrid');
+  STICKERS.forEach(em=>{
+    const b = el(`<div class="sticker-opt">${em}</div>`);
+    b.onclick = ()=>{
+      state.stickers.push({id:stickerSeq++, emoji:em, x:30+Math.random()*40, y:65+Math.random()*10});
+      renderStickers();
+    };
+    grid.appendChild(b);
+  });
+}
+const MOTIF_LABELS = {
+  branch:'Branch', sprig:'Sprig', wreath:'Wreath', single:'Single Bloom', rosebud:'Rosebud',
+  bouquet:'Bouquet', cornerspray:'Corner Spray', tuliprow:'Tulip Row', vinetrail:'Vine Trail',
+  lotus:'Lotus', garland:'Garland', sunburst:'Sunburst', cluster:'Cluster'
+};
+function buildMotifGrid(){
+  const grid = document.getElementById('motifGrid');
+  Object.keys(MOTIFS).forEach(key=>{
+    const b = el(`<div class="motif-opt" data-motif="${key}">${floralSVG(key, '#8a6a2c')}<span>${MOTIF_LABELS[key]}</span></div>`);
+    b.onclick = ()=>{ state.stamp.motif=key; state.stamp.photo=null; renderStamp(); };
+    grid.appendChild(b);
+  });
+}
+function buildColorSwatches(containerId, colors, onPick){
+  const grid = document.getElementById(containerId);
+  colors.forEach(c=>{
+    const b = el(`<div class="swatch" data-color="${c}" style="background:${c}"></div>`);
+    b.onclick = ()=>onPick(c);
+    grid.appendChild(b);
+  });
+}
+
+buildThemeGrid();
+buildStickerGrid();
+buildMotifGrid();
+buildColorSwatches('stampColorSwatches', COLORS, (c)=>{ state.stamp.color=c; renderStamp(); });
+buildColorSwatches('envColorSwatches', ENV_COLORS, (c)=>{ state.envelope.color=c; renderEnvelope(); });
+buildColorSwatches('sealColorSwatches', COLORS, (c)=>{ state.envelope.sealColor=c; renderEnvelope(); });
+
+// ---------------- tabs ----------------
+document.getElementById('tabs').addEventListener('click', (e)=>{
+  const tab = e.target.closest('.tab'); if(!tab) return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelector(`.tab-panel[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+});
+
+// ---------------- field bindings ----------------
+document.getElementById('titleInput').addEventListener('input', e=>{ state.title=e.target.value||'Happy Friendship Day'; renderTitle(); });
+document.getElementById('noteInput').addEventListener('input', e=>{ state.note=e.target.value; renderNote(); });
+document.getElementById('cardToInput').addEventListener('input', e=>{ state.cardTo=e.target.value||'Friend'; renderNote(); });
+document.getElementById('fontChoices').addEventListener('click', e=>{
+  const chip = e.target.closest('.font-chip'); if(!chip) return;
+  document.querySelectorAll('.font-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  state.noteFont = chip.dataset.font;
+  renderNote();
+});
+function loadImageResized(file, maxDim, onDone, onError){
+  if(!file || !file.type || file.type.indexOf('image/') !== 0){ onError && onError(new Error('not an image')); return; }
+  const reader = new FileReader();
+  reader.onerror = ()=>onError && onError(reader.error);
+  reader.onload = ()=>{
+    const img = new Image();
+    img.onerror = ()=>onError && onError(new Error('image decode failed'));
+    img.onload = ()=>{
+      try{
+        let w = img.width, h = img.height;
+        const scale = Math.min(1, maxDim / Math.max(w, h));
+        w = Math.max(1, Math.round(w * scale));
+        h = Math.max(1, Math.round(h * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        onDone(canvas.toDataURL('image/jpeg', 0.86));
+      }catch(err){ onError && onError(err); }
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('photoInput').addEventListener('change', e=>{
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const hint = document.getElementById('photoHint');
+  hint.textContent = 'Loading photo…';
+  loadImageResized(f, 900, (dataUrl)=>{
+    state.photo = dataUrl; renderPhoto();
+  }, (err)=>{
+    hint.textContent = "Couldn't load that photo — try a different image (JPG or PNG).";
+    console.error(err);
+  });
+  e.target.value = '';
+});
+document.getElementById('stampPhotoInput').addEventListener('change', e=>{
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  loadImageResized(f, 300, (dataUrl)=>{
+    state.stamp.photo = dataUrl; renderStamp();
+  }, (err)=>{
+    alert("Couldn't load that photo — try a different image (JPG or PNG).");
+    console.error(err);
+  });
+  e.target.value = '';
+});
+document.getElementById('stampTextInput').addEventListener('input', e=>{ state.stamp.text = (e.target.value||'FRIENDSHIP').toUpperCase(); renderStamp(); });
+document.getElementById('postmarkToggle').addEventListener('change', e=>{ state.stamp.postmark = e.target.checked; renderStamp(); });
+
+document.getElementById('patternChoices').addEventListener('click', e=>{
+  const opt = e.target.closest('.pattern-opt'); if(!opt) return;
+  state.envelope.pattern = opt.dataset.pattern; renderEnvelope();
+});
+document.getElementById('sealStyleChoices').addEventListener('click', e=>{
+  const opt = e.target.closest('.pattern-opt'); if(!opt) return;
+  state.envelope.sealStyle = opt.dataset.seal; renderEnvelope();
+});
+document.getElementById('sealTextInput').addEventListener('input', e=>{ state.envelope.sealText = e.target.value; renderEnvelopeSeal(); });
+document.getElementById('fromInput').addEventListener('input', e=>{ state.envelope.from = e.target.value; renderEnvelope(); });
+document.getElementById('toInput').addEventListener('input', e=>{ state.envelope.to = e.target.value; renderEnvelope(); });
+
+// ---------------- mode / flip / open ----------------
+const envelopeEl = document.getElementById('envelope');
+const card3dEl = document.getElementById('card3d');
+
+function setMode(m){
+  mode = m;
+  document.getElementById('btnModeEnvelope').classList.toggle('active', m==='envelope');
+  document.getElementById('btnModeCard').classList.toggle('active', m==='card');
+  envelopeEl.style.display = m==='envelope' ? 'block' : 'none';
+  card3dEl.style.display = m==='card' ? 'block' : 'none';
+  document.getElementById('btnFlip').style.display = m==='card' ? 'inline-flex' : 'none';
+  if(m==='envelope'){ envelopeEl.classList.remove('open'); }
+}
+document.getElementById('btnModeEnvelope').onclick = ()=>setMode('envelope');
+document.getElementById('btnModeCard').onclick = ()=>setMode('card');
+
+envelopeEl.addEventListener('click', (e)=>{
+  if(!envelopeEl.classList.contains('open')){
+    envelopeEl.classList.add('open');
+  } else {
+    setTimeout(()=>setMode('card'), 120);
+  }
+});
+
+function toggleFlip(){
+  flipped = !flipped;
+  card3dEl.classList.toggle('flipped', flipped);
+}
+document.getElementById('btnFlip').addEventListener('click', toggleFlip);
+card3dEl.addEventListener('click', toggleFlip);
+document.getElementById('btnFlip').style.display = 'none';
+
+// ---------------- copy helper (works better in embedded webviews than clipboard API alone) ----------------
+function copyInputText(input){
+  input.removeAttribute('readonly');
+  input.focus(); input.select();
+  try{ input.setSelectionRange(0, 99999); }catch(e){}
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){ ok = false; }
+  input.setAttribute('readonly', '');
+  if(ok) return Promise.resolve(true);
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(input.value).then(()=>true).catch(()=>false);
+  }
+  return Promise.resolve(false);
+}
+
+// ---------------- save image (works everywhere — WhatsApp, Instagram, email, etc.) ----------------
+document.getElementById('btnDownload').addEventListener('click', async ()=>{
+  const btn = document.getElementById('btnDownload');
+  const original = btn.textContent;
+  btn.textContent = 'Rendering…';
+  const target = mode==='envelope' ? envelopeEl : card3dEl;
+  try{
+    const canvas = await html2canvas(target, {backgroundColor:null, scale:2, useCORS:true});
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = (mode==='envelope' ? 'friendship-envelope' : 'friendship-postcard') + '.png';
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }catch(err){
+    alert("Couldn't render the image in this view — try switching to the other view (Envelope/Postcard) and saving again.");
+    console.error(err);
+  }
+  btn.textContent = original;
+});
+
+
+// ---------------- self-contained code encoding (no backend, no URL needed) ----------------
+function b64EncodeUnicode(str){
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m,p1)=>String.fromCharCode('0x'+p1)))
+    .replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function b64DecodeUnicode(str){
+  str = str.replace(/-/g,'+').replace(/_/g,'/');
+  while(str.length % 4) str += '=';
+  return decodeURIComponent(atob(str).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+const MAX_CODE_LEN = 6000; // keep codes short enough to paste anywhere reliably
+
+function buildSharePayload(){
+  let dataStr = JSON.stringify(state);
+  let encoded = b64EncodeUnicode(dataStr);
+  let trimmedPhoto = false;
+  if(encoded.length > MAX_CODE_LEN){
+    const lean = JSON.parse(dataStr);
+    lean.photo = null;
+    if(lean.stamp) lean.stamp.photo = null;
+    dataStr = JSON.stringify(lean);
+    encoded = b64EncodeUnicode(dataStr);
+    trimmedPhoto = true;
+  }
+  return {encoded, trimmedPhoto, tooLarge: encoded.length > MAX_CODE_LEN};
+}
+
+function isRealHostedPage(){
+  // true once this file is actually served over http/https (e.g. GitHub Pages),
+  // false for local file:// previews where we can't know the future public URL
+  return (location.protocol === 'http:' || location.protocol === 'https:');
+}
+
+document.getElementById('btnShare').addEventListener('click', async ()=>{
+  const hint = document.getElementById('shareHint');
+  hint.textContent = '';
+  try{
+    const {encoded, trimmedPhoto, tooLarge} = buildSharePayload();
+    if(tooLarge){
+      hint.textContent = "Your card is too large for a code (probably the photo). Remove the photo or use \"Save image to send\" instead.";
+      return;
+    }
+    const panel = document.getElementById('sharePanel');
+    const input = document.getElementById('shareLinkInput');
+    panel.style.display = 'flex';
+
+    const hosted = isRealHostedPage();
+    const fullLink = location.origin + location.pathname + '#c=' + encoded;
+    input.value = hosted ? fullLink : encoded;
+
+    const copied = await copyInputText(input);
+    const trimmedNote = trimmedPhoto ? 'Your photo was too large to include, so it was left out. ' : '';
+
+    if(hosted){
+      hint.innerHTML = (copied ? '✅ Link copied. ' : '⚠️ Could not auto-copy — select the link above and copy it manually. ') +
+        trimmedNote + `Just send this one link — it opens straight to your card.`;
+    } else {
+      hint.innerHTML = (copied ? '✅ Copied. ' : '⚠️ Could not auto-copy — select the code above and copy it manually. ') +
+        trimmedNote +
+        `<b>Step 1:</b> Share this app's page (Publish/Share button) with your friend — once. <b>Step 2:</b> Send them this code for each card. They paste it into the box that greets them.`;
+    }
+  }catch(err){
+    hint.textContent = 'Something went wrong building the code — please use "Save image to send" instead.';
+    console.error(err);
+  }
+});
+
+document.getElementById('btnCopyLink').addEventListener('click', async ()=>{
+  const input = document.getElementById('shareLinkInput');
+  const btn = document.getElementById('btnCopyLink');
+  const ok = await copyInputText(input);
+  btn.textContent = ok ? 'Copied!' : 'Select & copy manually';
+  setTimeout(()=>btn.textContent='Copy code', 1600);
+});
+
+document.getElementById('codeToggle').addEventListener('click', ()=>{
+  const panel = document.getElementById('loadPanel');
+  panel.style.display = panel.style.display==='flex' ? 'none' : 'flex';
+});
+
+document.getElementById('btnLoadCode').addEventListener('click', ()=>{
+  const raw = document.getElementById('loadCodeInput').value.trim();
+  const loadHint = document.getElementById('loadHint');
+  if(!raw){ loadHint.textContent = 'Paste a code first.'; return; }
+  const payload = extractSharePayload(raw);
+  loadSharedCard(payload, loadHint);
+});
+
+function extractSharePayload(raw){
+  raw = (raw || '').trim();
+  let m = raw.match(/#c=(.+)$/);
+  if(m) return m[1];
+  m = raw.match(/^c=(.+)$/);
+  if(m) return m[1];
+  return raw;
+}
+
+function mergeState(loaded){
+  if(!loaded) return;
+  state.theme = loaded.theme || state.theme;
+  state.title = loaded.title ?? state.title;
+  state.note = loaded.note ?? state.note;
+  state.noteFont = loaded.noteFont || state.noteFont;
+  state.cardTo = loaded.cardTo ?? state.cardTo;
+  state.photo = loaded.photo ?? state.photo;
+  state.stickers = Array.isArray(loaded.stickers) ? loaded.stickers : state.stickers;
+  if(loaded.stamp) Object.assign(state.stamp, loaded.stamp);
+  if(loaded.envelope) Object.assign(state.envelope, loaded.envelope);
+  stickerSeq = state.stickers.reduce((m,s)=>Math.max(m, (s.id||0)+1), stickerSeq);
+
+  // sync form fields to reflect loaded state
+  document.getElementById('titleInput').value = state.title;
+  document.getElementById('noteInput').value = state.note;
+  document.getElementById('cardToInput').value = state.cardTo;
+  document.getElementById('stampTextInput').value = state.stamp.text;
+  document.getElementById('postmarkToggle').checked = state.stamp.postmark;
+  document.getElementById('sealTextInput').value = state.envelope.sealText;
+  document.getElementById('fromInput').value = state.envelope.from;
+  document.getElementById('toInput').value = state.envelope.to;
+  document.querySelectorAll('.font-chip').forEach(c=>c.classList.toggle('active', c.dataset.font===state.noteFont));
+}
+
+function loadSharedCard(payload, hintEl, asViewer){
+  if(!payload){ if(hintEl) hintEl.textContent = "That doesn't look like a valid code."; return; }
+  try{
+    const loaded = JSON.parse(b64DecodeUnicode(payload));
+    mergeState(loaded);
+    renderAll();
+    setMode('envelope');
+    if(hintEl) hintEl.textContent = '';
+    document.getElementById('loadPanel').style.display = 'none';
+    if(asViewer){
+      enterViewerMode();
+    } else {
+      document.getElementById('receivedBanner').style.display = 'flex';
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    return true;
+  }catch(err){
+    console.error('Could not load shared card', err);
+    if(hintEl) hintEl.textContent = "That code looks incomplete or damaged — ask your friend to resend it.";
+    else if(asViewer) alert("That code looks incomplete or damaged — ask your friend to resend it.");
+    return false;
+  }
+}
+
+function tryLoadFromHash(){
+  const m = location.hash.match(/^#?c=(.+)$/);
+  if(m) loadSharedCard(m[1], null, true);
+}
+
+// ---------------- landing gate: shown first, before the editor ----------------
+document.getElementById('gateSkipBtn').addEventListener('click', ()=>{
+  document.getElementById('landingGate').style.display = 'none';
+});
+document.getElementById('gateOpenBtn').addEventListener('click', ()=>{
+  const raw = document.getElementById('gateCodeInput').value.trim();
+  const err = document.getElementById('gateError');
+  if(!raw){ err.textContent = 'Paste a code first.'; return; }
+  const payload = extractSharePayload(raw);
+  const ok = loadSharedCard(payload, null, true);
+  if(ok){
+    err.textContent = '';
+    document.getElementById('landingGate').style.display = 'none';
+  } else {
+    err.textContent = "That code looks incomplete or damaged — ask your friend to resend it.";
+  }
+});
+
+document.getElementById('btnStartFresh').addEventListener('click', ()=>{
+  document.getElementById('receivedBanner').style.display = 'none';
+  history.replaceState(null, '', location.pathname + location.search);
+});
+
+// ---------------- viewer mode: see the letter first, swipe up to customize your own ----------------
+function enterViewerMode(){
+  document.body.classList.add('viewer-mode');
+  document.getElementById('swipeHint').style.display = 'flex';
+}
+function exitViewerMode(){
+  document.body.classList.remove('viewer-mode');
+  document.getElementById('swipeHint').style.display = 'none';
+  document.getElementById('receivedBanner').style.display = 'flex';
+  window.scrollTo({top:0, behavior:'auto'});
+}
+document.getElementById('swipeHint').addEventListener('click', exitViewerMode);
+(function(){
+  let startY = null;
+  const stageEl = document.getElementById('stage');
+  stageEl.addEventListener('touchstart', e=>{
+    if(!document.body.classList.contains('viewer-mode')) return;
+    startY = e.touches[0].clientY;
+  }, {passive:true});
+  stageEl.addEventListener('touchmove', e=>{
+    if(!document.body.classList.contains('viewer-mode') || startY===null) return;
+    if(startY - e.touches[0].clientY > 65){ exitViewerMode(); startY = null; }
+  }, {passive:true});
+  stageEl.addEventListener('touchend', ()=>{ startY = null; });
+  window.addEventListener('wheel', e=>{
+    if(document.body.classList.contains('viewer-mode') && e.deltaY < -25) exitViewerMode();
+  }, {passive:true});
+})();
+
+// ---------------- init ----------------
+renderAll();
+setMode('envelope');
+if(location.hash && /c=/.test(location.hash)){
+  tryLoadFromHash();
+} else {
+  document.getElementById('landingGate').style.display = 'flex';
+}
+
+})();
+</script>
+</body>
+</html>
